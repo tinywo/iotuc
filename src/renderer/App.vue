@@ -37,6 +37,31 @@
         width: 0.5px;
         background-color: #d7dde4 !important;
     }
+
+    .ivu-layout-sider {
+        background-color: #f5f7f9;
+        border-right: 1px solid #e1e1e2;
+    }
+
+    .ivu-menu-light {
+        background-color: #f5f7f9;
+    }
+
+    .ivu-layout-sider-children {
+        background-color: #f5f5f7;
+    }
+
+    .ivu-menu-vertical.ivu-menu-light::after {
+        background-color: transparent;
+    }
+
+    .ivu-menu-light.ivu-menu-vertical .ivu-menu-item-active:not(.ivu-menu-submenu):after {
+        left: 0;
+    }
+
+    .ivu-layout {
+        background-color: #fafafa;
+    }
 </style>
 <template>
     <div class="layout">
@@ -59,7 +84,7 @@
                 </div>
             </Header>
             <Layout>
-                <Sider hide-trigger :style="{background: '#fff'}" style="-webkit-app-region: no-drag;">
+                <Sider hide-trigger style="-webkit-app-region: no-drag;">
                     <Menu active-name="1-2" theme="light" width="auto" :open-names="['1']">
                         <Submenu name="1">
                             <template slot="title">
@@ -88,13 +113,8 @@
                         </Submenu>
                     </Menu>
                 </Sider>
-                <Layout :style="{padding: '0 24px 24px'}">
-                    <Breadcrumb :style="{margin: '24px 0'}">
-                        <BreadcrumbItem>Home</BreadcrumbItem>
-                        <BreadcrumbItem>Components</BreadcrumbItem>
-                        <BreadcrumbItem>Layout</BreadcrumbItem>
-                    </Breadcrumb>
-                    <Content :style="{padding: '24px', minHeight: '280px', background: '#fff'}">
+                <Layout>
+                    <Content>
                         <router-view></router-view>
                     </Content>
                 </Layout>

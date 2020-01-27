@@ -21,6 +21,11 @@ export default new Router({
             component: require('@/components/CensusPage').default
         },
         {
+            path: '/setting',
+            name: 'setting-page',
+            component: require('@/components/SettingPage').default
+        },
+        {
             path: '*',
             redirect: '/'
         }
