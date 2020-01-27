@@ -45,6 +45,7 @@
 
     .ivu-menu-light {
         background-color: #f5f7f9;
+        width: 199px !important;
     }
 
     .ivu-layout-sider-children {
@@ -57,6 +58,12 @@
 
     .ivu-menu-light.ivu-menu-vertical .ivu-menu-item-active:not(.ivu-menu-submenu):after {
         left: 0;
+        width: 3px;
+    }
+
+    .ivu-menu-light.ivu-menu-vertical .ivu-menu-item-active:not(.ivu-menu-submenu) {
+        color: #000000;
+        background: #e6e7ea;
     }
 
     .ivu-layout {
@@ -71,9 +78,9 @@
                     <p>次奥物联网上位机软件</p>
                 </div>
                 <div class="tw-menubar" style="-webkit-app-region: no-drag;">
-                    <a href="">
+                    <router-link to="/setting">
                         <Icon type="ios-settings" size="18"/>
-                    </a>
+                    </router-link>
                     <Divider type="vertical"/>
                     <a href="">
                         <Icon type="ios-remove" size="24"/>
@@ -85,32 +92,31 @@
             </Header>
             <Layout>
                 <Sider hide-trigger style="-webkit-app-region: no-drag;">
-                    <Menu active-name="1-2" theme="light" width="auto" :open-names="['1']">
-                        <Submenu name="1">
-                            <template slot="title">
-                                <Icon type="ios-navigate"></Icon>
-                                Item 1
-                            </template>
-                            <MenuItem name="1-1">Option 1</MenuItem>
-                            <MenuItem name="1-2">Option 2</MenuItem>
-                            <MenuItem name="1-3">Option 3</MenuItem>
-                        </Submenu>
-                        <Submenu name="2">
-                            <template slot="title">
-                                <Icon type="ios-keypad"></Icon>
-                                Item 2
-                            </template>
-                            <MenuItem name="2-1">Option 1</MenuItem>
-                            <MenuItem name="2-2">Option 2</MenuItem>
-                        </Submenu>
-                        <Submenu name="3">
-                            <template slot="title">
-                                <Icon type="ios-analytics"></Icon>
-                                Item 3
-                            </template>
-                            <MenuItem name="3-1">Option 1</MenuItem>
-                            <MenuItem name="3-2">Option 2</MenuItem>
-                        </Submenu>
+                    <Menu active-name="1" theme="light">
+                        <MenuGroup title="首页">
+                            <router-link to="/" style="color: #5c5c5c;">
+                                <MenuItem name="1">
+                                    <Icon type="ios-home" size="20"/>
+                                    首页
+                                </MenuItem>
+                            </router-link>
+                        </MenuGroup>
+                        <MenuGroup title="监测">
+                            <router-link to="/monitor" style="color: #5c5c5c;">
+                                <MenuItem name="2">
+                                    <Icon type="ios-pulse" size="20"/>
+                                    监测
+                                </MenuItem>
+                            </router-link>
+                        </MenuGroup>
+                        <MenuGroup title="统计">
+                            <router-link to="/census" style="color: #5c5c5c;">
+                                <MenuItem name="3">
+                                    <Icon type="ios-stats" size="20"/>
+                                    统计
+                                </MenuItem>
+                            </router-link>
+                        </MenuGroup>
                     </Menu>
                 </Sider>
                 <Layout>
