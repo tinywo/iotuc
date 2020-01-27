@@ -2,7 +2,11 @@
 dist/electron/*
 dist/web/*
 !build/icons
-build/*
+build/win-unpacked/*
+build/builder-effective-config.yaml
+build/latest.yml
+build/*.exe
+build/*.exe.blockmap
 node_modules/
 npm-debug.log
 npm-debug.log.*
