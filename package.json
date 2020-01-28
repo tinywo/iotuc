@@ -47,8 +47,36 @@
       "icon": "build/icons/icon.ico"
     },
     "linux": {
-      "icon": "build/icons"
-    }
+      "icon": "build/icons/icon.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "installerIcon": "./build/icon.ico",
+      "uninstallerIcon": "./build/icon.ico",
+      "installerHeader": "./build/icon.ico",
+      "installerHeaderIcon": "./build/icon.ico",
+      "installerSidebar": "./build/sidebar.bmp",
+      "uninstallerSidebar": "./build/sidebar.bmp"
+    },
+    "fileAssociations": [
+      {
+        "name": "物联网上位机",
+        "ext": "elefile",
+        "icon": "./resources/icon.ico",
+        "description": "物联网上位机"
+      }
+    ],
+    "extraResources": [
+      {
+        "form": "icons/",
+        "to": "icons/"
+      },
+      {
+        "form": "mysql/",
+        "to": "mysql/"
+      }
+    ]
   },
   "dependencies": {
     "axios": "^0.18.0",
@@ -97,11 +125,5 @@
     "webpack-dev-server": "^3.1.4",
     "webpack-hot-middleware": "^2.22.2",
     "webpack-merge": "^4.1.3"
-  },
-  "extraResources": [
-    {
-      "form": "/extra",
-      "to": "/bin"
-    }
-  ]
+  }
 }
