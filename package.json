@@ -53,6 +53,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "echarts": "^4.6.0",
+    "node-cmd": "^3.0.0",
     "view-design": "^4.0.2",
     "vue": "^2.5.16",
     "vue-electron": "^1.0.6",
@@ -99,8 +100,8 @@
   },
   "extraResources": [
     {
-      "form": "extra/mysql",
-      "to": "extra/mysql"
+      "form": "/extra",
+      "to": "/bin"
     }
   ]
 }

@@ -13,6 +13,9 @@ const winURL = process.env.NODE_ENV === 'development'
     ? `http://localhost:9080`
     : `file://${__dirname}/index.html`
 
+const cmd=require('node-cmd');
+console.log(__dirname);
+//cmd.run('cd bin\\mysql')
 
 function createWindow() {
     /**
