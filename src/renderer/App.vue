@@ -110,7 +110,7 @@
                             <router-link to="/" style="color: #5c5c5c;">
                                 <MenuItem name="1">
                                     <Icon type="ios-home" size="20"/>
-                                    首页
+                                    系统首页
                                 </MenuItem>
                             </router-link>
                         </MenuGroup>
@@ -118,7 +118,7 @@
                             <router-link to="/monitor" style="color: #5c5c5c;">
                                 <MenuItem name="2">
                                     <Icon type="ios-pulse" size="20"/>
-                                    监测
+                                    实时监测
                                 </MenuItem>
                             </router-link>
                             <router-link to="/monitor" style="color: #5c5c5c;">
@@ -138,7 +138,7 @@
                             <router-link to="/census" style="color: #5c5c5c;">
                                 <MenuItem name="3">
                                     <Icon type="ios-stats" size="20"/>
-                                    统计
+                                    数据统计
                                 </MenuItem>
                             </router-link>
                             <router-link to="/census" style="color: #5c5c5c;">

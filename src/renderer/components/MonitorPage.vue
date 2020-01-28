@@ -42,29 +42,77 @@
     }
 </style>
 <template>
-    <div id="echart" style="width: 940px;height:500px;"></div>
+    <div>
+        <Breadcrumb :style="{'height':'40px','line-height': '40px','padding-left':' 20px'}">
+            <BreadcrumbItem to="/">
+                <Icon type="ios-pulse" size="20"></Icon>
+                实时监测
+            </BreadcrumbItem>
+        </Breadcrumb>
+        <div id="echart" style="width: 100%;height:544px;"></div>
+    </div>
 </template>
 
 <script>
-  /*  var Hightcharts = require('highcharts');
-    require('highcharts/modules/exporting')(Hightcharts);
-    Hightcharts.chart('container', {
-        title: '',
-        xAxis: {
-            title: {
-                text: '时间'
-            },
-            type: 'datetime',
-            tickPixelInterval: 150
+    import echarts from 'echarts'
+
+    export default {
+        name: "RealPage",
+        data() {
+            return {}
         },
-        yAxis: {
-            title: {
-                text: '温度'
+        mounted() {
+            var data = [];
+
+            function randomData() {
+                return {
+                    name: (new Date()).getTime().toString(),
+                    value: [(new Date()).getTime(), Math.floor((Math.random() * 30) + 1)]
+                };
             }
-        },
-        series: [{
-            name: '温度实时曲线',
-            data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-        }]
-    });*/
+
+            for (let i = 0; i < 1000; i++) {
+                data.push(randomData());
+                console.log(data)
+            }
+            let myChart = echarts.init(document.getElementById('echart'));
+            let option = {
+                title: {
+                    text: '温度曲线图'
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    formatter: function (params) {
+                        params = params[0];
+                        var date = new Date(params.name);
+                        return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + ' : ' + params.value[1];
+                    },
+                    axisPointer: {
+                        animation: false
+                    }
+                },
+                xAxis: {
+                    type: 'time',
+                    splitLine: {
+                        show: false
+                    },
+                },
+                yAxis: {
+                    type: 'value',
+                    boundaryGap: [0, '100%'],
+                    splitLine: {
+                        show: false
+                    }
+                },
+                series: [{
+                    name: '模拟数据',
+                    type: 'line',
+                    showSymbol: false,
+                    hoverAnimation: false,
+                    data: data
+                }]
+            };
+            myChart.setOption(option);
+        }
+    }
 </script>
