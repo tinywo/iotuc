@@ -41,6 +41,7 @@
     .ivu-layout-sider {
         background-color: #f5f7f9;
         border-right: 1px solid #e1e1e2;
+        height: 600px !important;
     }
 
     .ivu-menu-light {
@@ -69,6 +70,17 @@
     .ivu-layout {
         background-color: #fafafa;
     }
+
+    .tw-leftbar::-webkit-scrollbar { /*滚动条整体样式*/
+        width: 7px; /*高宽分别对应横竖滚动条的尺寸*/
+        height: 1px;
+    }
+
+    .tw-leftbar::-webkit-scrollbar-thumb { /*滚动条里面小方块*/
+        border-radius: 10px;
+        /* -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);*/
+        background: #e1e1e2;
+    }
 </style>
 <template>
     <div class="layout">
@@ -91,7 +103,8 @@
                 </div>
             </Header>
             <Layout>
-                <Sider hide-trigger style="-webkit-app-region: no-drag;">
+                <Sider hide-trigger class="tw-leftbar" style="-webkit-app-region: no-drag;"
+                       :style="{position: 'fixed', height: '100vh', left: 0, overflow: 'auto'}">
                     <Menu active-name="1" theme="light">
                         <MenuGroup title="首页">
                             <router-link to="/" style="color: #5c5c5c;">
@@ -108,8 +121,74 @@
                                     监测
                                 </MenuItem>
                             </router-link>
+                            <router-link to="/monitor" style="color: #5c5c5c;">
+                                <MenuItem name="2">
+                                    <Icon type="ios-pulse" size="20"/>
+                                    监测
+                                </MenuItem>
+                            </router-link>
+                            <router-link to="/monitor" style="color: #5c5c5c;">
+                                <MenuItem name="2">
+                                    <Icon type="ios-pulse" size="20"/>
+                                    监测
+                                </MenuItem>
+                            </router-link>
                         </MenuGroup>
                         <MenuGroup title="统计">
+                            <router-link to="/census" style="color: #5c5c5c;">
+                                <MenuItem name="3">
+                                    <Icon type="ios-stats" size="20"/>
+                                    统计
+                                </MenuItem>
+                            </router-link>
+                            <router-link to="/census" style="color: #5c5c5c;">
+                                <MenuItem name="3">
+                                    <Icon type="ios-stats" size="20"/>
+                                    统计
+                                </MenuItem>
+                            </router-link>
+                            <router-link to="/census" style="color: #5c5c5c;">
+                                <MenuItem name="3">
+                                    <Icon type="ios-stats" size="20"/>
+                                    统计
+                                </MenuItem>
+                            </router-link>
+                            <router-link to="/census" style="color: #5c5c5c;">
+                                <MenuItem name="3">
+                                    <Icon type="ios-stats" size="20"/>
+                                    统计
+                                </MenuItem>
+                            </router-link>
+                            <router-link to="/census" style="color: #5c5c5c;">
+                                <MenuItem name="3">
+                                    <Icon type="ios-stats" size="20"/>
+                                    统计
+                                </MenuItem>
+                            </router-link>
+                            <router-link to="/census" style="color: #5c5c5c;">
+                                <MenuItem name="3">
+                                    <Icon type="ios-stats" size="20"/>
+                                    统计
+                                </MenuItem>
+                            </router-link>
+                            <router-link to="/census" style="color: #5c5c5c;">
+                                <MenuItem name="3">
+                                    <Icon type="ios-stats" size="20"/>
+                                    统计
+                                </MenuItem>
+                            </router-link>
+                            <router-link to="/census" style="color: #5c5c5c;">
+                                <MenuItem name="3">
+                                    <Icon type="ios-stats" size="20"/>
+                                    统计
+                                </MenuItem>
+                            </router-link>
+                            <router-link to="/census" style="color: #5c5c5c;">
+                                <MenuItem name="3">
+                                    <Icon type="ios-stats" size="20"/>
+                                    统计
+                                </MenuItem>
+                            </router-link>
                             <router-link to="/census" style="color: #5c5c5c;">
                                 <MenuItem name="3">
                                     <Icon type="ios-stats" size="20"/>
@@ -119,7 +198,7 @@
                         </MenuGroup>
                     </Menu>
                 </Sider>
-                <Layout>
+                <Layout style="padding-left: 199px;">
                     <Content>
                         <router-view></router-view>
                     </Content>

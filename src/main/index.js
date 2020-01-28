@@ -24,11 +24,14 @@ function createWindow() {
         height: 604,
         useContentSize: true,
         width: 1040,
-        frame: false
+        frame: false,
+        show: false//先隐藏
     });
-
     mainWindow.loadURL(winURL)
     mainWindow.webContents.openDevTools();
+    mainWindow.on('ready-to-show', function () {
+        mainWindow.show()//初始化完成后显示防止启动白屏
+    });
     mainWindow.on('closed', () => {
         mainWindow = null
     })
