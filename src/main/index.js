@@ -1,6 +1,7 @@
 const electron = require('electron');
 const {app, BrowserWindow, Menu} = electron;
 const path = require('path');
+const shell = electron.shell;
 const img = path.join(__dirname, '../../static/img');
 const serialPort = require('serialport');
 const ipcMain = electron.ipcMain;
@@ -76,25 +77,25 @@ function createWindow() {
         {
             label: '设置',
             click: function () {
-
+                shell.openExternal("//www.tinywo.com")
             }
         },
         {
             label: '帮助',
             click: function () {
-
+                shell.openExternal("//www.tinywo.com")
             }
         },
         {
             label: '关于',
             click: function () {
-
+                shell.openExternal("//www.tinywo.com")
             }
         },
         {
             label: '退出',
             click: function () {
-
+                mainWindow.close();
             }
         }
     ];
