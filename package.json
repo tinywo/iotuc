@@ -81,13 +81,16 @@
   "dependencies": {
     "axios": "^0.18.0",
     "echarts": "^4.6.0",
+    "mysql": "^2.18.1",
     "node-cmd": "^3.0.0",
+    "serialport": "^8.0.6",
     "view-design": "^4.0.2",
     "vue": "^2.5.16",
     "vue-electron": "^1.0.6",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1",
-    "vuex-electron": "^1.0.0"
+    "vuex-electron": "^1.0.0",
+    "ws": "^7.2.1"
   },
   "devDependencies": {
     "ajv": "^6.5.0",
@@ -109,6 +112,7 @@
     "electron-builder": "^20.44.4",
     "electron-debug": "^1.5.0",
     "electron-devtools-installer": "^2.2.4",
+    "electron-rebuild": "^1.9.0",
     "file-loader": "^1.1.11",
     "html-webpack-plugin": "^3.2.0",
     "mini-css-extract-plugin": "0.4.0",

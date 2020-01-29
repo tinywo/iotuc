@@ -62,6 +62,15 @@
             return {}
         },
         mounted() {
+            const electron=require('electron');
+            const ipcRenderer = electron.ipcRenderer;
+
+            ipcRenderer.send('getIpAddress');
+
+            ipcRenderer.on('showSerialData', function (event, args) {
+                var serialdata = document.getElementById("serialdata");
+                serialdata.value = serialdata.value + args + '\n';
+            });
             var data = [];
 
             function randomData() {
@@ -71,7 +80,7 @@
                 };
             }
 
-            for (let i = 0; i < 1000; i++) {
+            for (let i = 0; i < 100; i++) {
                 data.push(randomData());
                 console.log(data)
             }
