@@ -106,7 +106,7 @@ function createWindow() {
     appTray.on('click', function () {
         mainWindow.show();
     });
-    mainWindow.webContents.openDevTools();
+    //mainWindow.webContents.openDevTools();
     //  调试控制台
     mainWindow.on('ready-to-show', function () {
         mainWindow.show()//初始化完成后显示防止启动白屏

@@ -49,7 +49,7 @@
                 实时监测
             </BreadcrumbItem>
         </Breadcrumb>
-        <div id="echart" style="width: 100%;height:544px;"></div>
+        <div id="echart" style="width: 100%;height:512px;"></div>
     </div>
 </template>
 
