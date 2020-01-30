@@ -105,10 +105,10 @@
             <Layout>
                 <Sider hide-trigger class="tw-leftbar" style="-webkit-app-region: no-drag;"
                        :style="{position: 'fixed', height: '100vh', left: 0, overflow: 'auto'}">
-                    <Menu active-name="1" theme="light">
+                    <Menu active-name="1-1" theme="light">
                         <MenuGroup title="首页">
                             <router-link to="/" style="color: #5c5c5c;">
-                                <MenuItem name="1">
+                                <MenuItem name="1-1">
                                     <Icon type="ios-home" size="20"/>
                                     系统首页
                                 </MenuItem>
@@ -116,19 +116,19 @@
                         </MenuGroup>
                         <MenuGroup title="监测">
                             <router-link to="/monitor" style="color: #5c5c5c;">
-                                <MenuItem name="2">
+                                <MenuItem name="2-1">
                                     <Icon type="ios-pulse" size="20"/>
                                     实时监测
                                 </MenuItem>
                             </router-link>
                             <router-link to="/monitor" style="color: #5c5c5c;">
-                                <MenuItem name="2">
+                                <MenuItem name="2-2">
                                     <Icon type="ios-pulse" size="20"/>
                                     监测
                                 </MenuItem>
                             </router-link>
                             <router-link to="/monitor" style="color: #5c5c5c;">
-                                <MenuItem name="2">
+                                <MenuItem name="2-3">
                                     <Icon type="ios-pulse" size="20"/>
                                     监测
                                 </MenuItem>
@@ -136,63 +136,23 @@
                         </MenuGroup>
                         <MenuGroup title="统计">
                             <router-link to="/census" style="color: #5c5c5c;">
-                                <MenuItem name="3">
+                                <MenuItem name="3-1">
                                     <Icon type="ios-stats" size="20"/>
                                     数据统计
                                 </MenuItem>
                             </router-link>
                             <router-link to="/census" style="color: #5c5c5c;">
-                                <MenuItem name="3">
+                                <MenuItem name="3-2">
                                     <Icon type="ios-stats" size="20"/>
                                     统计
                                 </MenuItem>
                             </router-link>
-                            <router-link to="/census" style="color: #5c5c5c;">
-                                <MenuItem name="3">
-                                    <Icon type="ios-stats" size="20"/>
-                                    统计
-                                </MenuItem>
-                            </router-link>
-                            <router-link to="/census" style="color: #5c5c5c;">
-                                <MenuItem name="3">
-                                    <Icon type="ios-stats" size="20"/>
-                                    统计
-                                </MenuItem>
-                            </router-link>
-                            <router-link to="/census" style="color: #5c5c5c;">
-                                <MenuItem name="3">
-                                    <Icon type="ios-stats" size="20"/>
-                                    统计
-                                </MenuItem>
-                            </router-link>
-                            <router-link to="/census" style="color: #5c5c5c;">
-                                <MenuItem name="3">
-                                    <Icon type="ios-stats" size="20"/>
-                                    统计
-                                </MenuItem>
-                            </router-link>
-                            <router-link to="/census" style="color: #5c5c5c;">
-                                <MenuItem name="3">
-                                    <Icon type="ios-stats" size="20"/>
-                                    统计
-                                </MenuItem>
-                            </router-link>
-                            <router-link to="/census" style="color: #5c5c5c;">
-                                <MenuItem name="3">
-                                    <Icon type="ios-stats" size="20"/>
-                                    统计
-                                </MenuItem>
-                            </router-link>
-                            <router-link to="/census" style="color: #5c5c5c;">
-                                <MenuItem name="3">
-                                    <Icon type="ios-stats" size="20"/>
-                                    统计
-                                </MenuItem>
-                            </router-link>
-                            <router-link to="/census" style="color: #5c5c5c;">
-                                <MenuItem name="3">
-                                    <Icon type="ios-stats" size="20"/>
-                                    统计
+                        </MenuGroup>
+                        <MenuGroup title="控制">
+                            <router-link to="/control" style="color: #5c5c5c;">
+                                <MenuItem name="4-1">
+                                    <Icon type="ios-switch" size="20"/>
+                                    系统控制
                                 </MenuItem>
                             </router-link>
                         </MenuGroup>
