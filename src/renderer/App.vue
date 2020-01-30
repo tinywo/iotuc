@@ -1,7 +1,7 @@
 <style scoped>
     .layout {
         border: 1px solid #d7dde4;
-        background: #f5f7f9;
+        background: transparent;
         position: relative;
         border-radius: 4px;
         overflow: hidden;
@@ -83,7 +83,7 @@
     }
 </style>
 <template>
-    <div class="layout">
+    <div class="layout" style="border: none;border-radius: 0;background-color: transparent;">
         <Layout>
             <Header>
                 <div class="tw-logo">
