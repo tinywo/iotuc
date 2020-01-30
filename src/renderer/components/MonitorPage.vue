@@ -62,7 +62,7 @@
             return {}
         },
         mounted() {
-            const electron=require('electron');
+            const electron = require('electron');
             const ipcRenderer = electron.ipcRenderer;
 
             ipcRenderer.send('getIpAddress');
@@ -71,7 +71,7 @@
                 var serialdata = document.getElementById("serialdata");
                 serialdata.value = serialdata.value + args + '\n';
             });
-            var data = [];
+            var data = [0,0,0,0,0,0,0,0];
 
             function randomData() {
                 return {
@@ -80,10 +80,10 @@
                 };
             }
 
-            for (let i = 0; i < 100; i++) {
+           /* for (let i = 0; i < 100; i++) {
                 data.push(randomData());
                 console.log(data)
-            }
+            }*/
             let myChart = echarts.init(document.getElementById('echart'));
             let option = {
                 title: {
@@ -122,6 +122,21 @@
                 }]
             };
             myChart.setOption(option);
+
+         /*   ipcRenderer.on('showSocketData', function (event, args) {
+                data.shift();
+                data.push(args);
+            });*/
+            setInterval(function () {
+
+                data.shift();
+                data.push(randomData());
+                myChart.setOption({
+                    series: [{
+                        data: data
+                    }]
+                });
+            }, 1000);
         }
     }
 </script>
