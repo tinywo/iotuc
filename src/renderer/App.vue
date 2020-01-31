@@ -103,7 +103,8 @@
                 </div>
             </Header>
             <Layout>
-                <Sider hide-trigger class="tw-leftbar" style="-webkit-app-region: no-drag;"
+                <Sider v-show="$route.name!=='setting-page'" hide-trigger class="tw-leftbar"
+                       style="-webkit-app-region: no-drag;"
                        :style="{position: 'fixed', height: '100vh', left: 0, overflow: 'auto'}">
                     <Menu active-name="1-1" theme="light">
                         <MenuGroup title="首页">
@@ -158,7 +159,7 @@
                         </MenuGroup>
                     </Menu>
                 </Sider>
-                <Layout style="padding-left: 199px;">
+                <Layout :style="{'padding-left':$route.name!=='setting-page'?'199px':'0'}">
                     <Content>
                         <router-view></router-view>
                     </Content>

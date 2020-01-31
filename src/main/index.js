@@ -1,5 +1,6 @@
 const electron = require('electron');
 const {app, BrowserWindow, Menu} = electron;
+const store = require('electron-store');
 const path = require('path');
 const shell = electron.shell;
 const img = path.join(__dirname, '../../static/img');
@@ -10,6 +11,59 @@ let plug = '';
 let host = '';
 const tray = electron.Tray;
 let appTray = null;
+
+//  设置存储
+const storeSettingSchema = {
+    serial: {
+        baudRate: {
+            type: 'number',
+            maximum: 115200,
+            minimum: 9600,
+            default: 115200
+        },
+    },
+    mysql: {
+        host: {
+            type: 'string',
+            default: 'localhost'
+        },
+        port: {
+            type: 'number',
+            default: 3306
+        },
+        user: {
+            type: 'string',
+            default: 'root'
+        },
+        password: {
+            type: 'string',
+            default: ''
+        },
+        database: {
+            type: 'string',
+            default: 'iot'
+        },
+        table: {
+            type: 'string',
+            default: 'data'
+        }
+    }
+};
+const store = new Store({schema});
+store.set({
+    serial: {
+        baudRate: 115200
+    },
+    mysql: {
+        host: 'localhost',
+        port: 3306,
+        user: 'root',
+        password: 'root',
+        database: 'iot',
+        table: 'data'
+    }
+});
+console.log(store.get('mysql.port'));
 const mysql = require('mysql');
 const conn = mysql.createConnection({
     host: "localhost",
@@ -77,7 +131,7 @@ function createWindow() {
         {
             label: '设置',
             click: function () {
-                shell.openExternal("//www.tinywo.com")
+
             }
         },
         {
