@@ -71,7 +71,19 @@
                 var serialdata = document.getElementById("serialdata");
                 serialdata.value = serialdata.value + args + '\n';
             });
-            var data = [0,0,0,0,0,0,0,0];
+            var data = (function () {
+                // 生成随机值
+                var data = [],
+                    time = (new Date()).getTime(),
+                    i;
+                for (i = -19; i <= 10; i += 1) {
+                    data.push({
+                        x: time + i * 1000,
+                        y: 0
+                    });
+                }
+                return data;
+            }());
 
             function randomData() {
                 return {
@@ -80,10 +92,6 @@
                 };
             }
 
-           /* for (let i = 0; i < 100; i++) {
-                data.push(randomData());
-                console.log(data)
-            }*/
             let myChart = echarts.init(document.getElementById('echart'));
             let option = {
                 title: {
@@ -122,21 +130,26 @@
                 }]
             };
             myChart.setOption(option);
-
-         /*   ipcRenderer.on('showSocketData', function (event, args) {
+            ipcRenderer.on('showSocketData', function (event, args) {
                 data.shift();
                 data.push(args);
-            });*/
-            setInterval(function () {
-
-                data.shift();
-                data.push(randomData());
                 myChart.setOption({
                     series: [{
+
                         data: data
                     }]
                 });
-            }, 1000);
+            });
+            /*         setInterval(function () {
+                         data.shift();
+                         data.push(randomData());
+                         myChart.setOption({
+                             series: [{
+
+                                 data: data
+                             }]
+                         });
+                     }, 1000);*/
         }
     }
 </script>

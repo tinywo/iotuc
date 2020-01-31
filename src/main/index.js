@@ -149,3 +149,40 @@ app.on('ready', () => {
   if (process.env.NODE_ENV === 'production') autoUpdater.checkForUpdates()
 })
  */
+ipcMain.on('getSetting', function (event) {
+    event.sender.send('backSetting');
+});
+
+ipcMain.on('startService', function (event, args) {
+    plug = args;
+    var events = require('events');
+    SPeventEmitter = new events.EventEmitter();
+    var WebSocketServer = WebSocket.Server;
+    wss = new WebSocketServer({
+        port: 8000,
+        host: host
+    });
+    if (plug === '') {
+        event.sender.send('serviceStatus', '未连接设备');
+    } else {
+        event.sender.send('serviceStatus', '已启动串口');
+        port = new SerialPort(plug, {
+            baudRate: 115200,
+        });
+        wss.on('connection', function (ws) {
+            ws.send("连接成功");
+            SPeventEmitter.on('postMsg', function (msg) {
+                ws.send(msg);
+            });
+        });
+        port.on('open', function () {
+            port.on('data', function (data) {
+                let txt = data.toString();
+                event.sender.send('showSerialData', txt);
+                let wstxt = JSON.parse(txt);
+                SPeventEmitter.emit('postMsg', wstxt);
+                event.sender.send('showSocketData', wstxt);
+            })
+        })
+    }
+});
