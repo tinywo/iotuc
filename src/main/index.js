@@ -1,6 +1,7 @@
 const electron = require('electron');
 const {app, BrowserWindow, Menu} = electron;
 const store = require('electron-store');
+const events = require('events');
 const path = require('path');
 const shell = electron.shell;
 const img = path.join(__dirname, '../../static/img');
@@ -49,8 +50,8 @@ const storeSettingSchema = {
         }
     }
 };
-const store = new Store({schema});
-store.set({
+const storeSetting = new store({storeSettingSchema});
+storeSetting.set({
     serial: {
         baudRate: 115200
     },
@@ -63,7 +64,7 @@ store.set({
         table: 'data'
     }
 });
-console.log(store.get('mysql.port'));
+console.log(storeSetting.get('mysql.port'));
 const mysql = require('mysql');
 const conn = mysql.createConnection({
     host: "localhost",
@@ -131,7 +132,7 @@ function createWindow() {
         {
             label: '设置',
             click: function () {
-
+                routerPushEventEmitter.emit('routerPush', 'setting');
             }
         },
         {
@@ -203,6 +204,19 @@ app.on('ready', () => {
   if (process.env.NODE_ENV === 'production') autoUpdater.checkForUpdates()
 })
  */
+var routerPushEventEmitter = new events.EventEmitter();
+ipcMain.on('routerPush', function (event) {
+    routerPushEventEmitter.on('routerPush', function (page) {
+        event.sender.send('routerPush', page);
+    });
+});
+ipcMain.on('listenAll', function (event) {
+    SPeventEmitter = new events.EventEmitter();
+    goSettingEventEmitter.on('goSetting', function (msg) {
+        event.sender.send('goSetting');
+    });
+});
+
 ipcMain.on('getSetting', function (event) {
     event.sender.send('backSetting');
 });

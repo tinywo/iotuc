@@ -182,6 +182,16 @@
                     this.isCollapsed ? 'collapsed-menu' : ''
                 ]
             }
+        },
+        methods: {},
+        mounted() {
+            const electron = require('electron');
+            const ipcRenderer = electron.ipcRenderer;
+            let that = this;
+            ipcRenderer.send('routerPush');
+            ipcRenderer.on('routerPush', function (event, args) {
+                that.$router.push({path: args});
+            });
         }
     }
 </script>

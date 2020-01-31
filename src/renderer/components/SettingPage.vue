@@ -52,13 +52,13 @@
 
 <template>
     <div>
-        <Breadcrumb
-                style="height: 50px;line-height: 50px;padding-left: 22px;border-bottom: 0.5px solid #e6e7ea;font-size: 20px;font-weight: 100;font-family: '等线 Light';-webkit-app-region: no-drag;">
-            <BreadcrumbItem to="/">
-                <Icon type="ios-arrow-back" size="24"></Icon>
+        <div style="border-bottom: 0.5px solid #e6e7ea;padding-left: 22px;">
+            <Button :size="buttonSize" type="primary" @click="backPush"
+                    style="height: 50px;line-height: 50px;font-size: 20px;color:#515a6e;border:none;background-color:transparent;font-weight: 100;font-family: '等线 Light';-webkit-app-region: no-drag;">
+                <Icon type="ios-arrow-back" size="24"/>
                 设置
-            </BreadcrumbItem>
-        </Breadcrumb>
+            </Button>
+        </div>
         <div style="padding-left: 100px;padding-top: 20px;z-index:99;-webkit-app-region: no-drag;"
              :style="{position: 'fixed', height: '100vh', left: 0, overflow: 'auto'}">
             <Anchor show-ink container=".tw-rightbar">
@@ -172,7 +172,14 @@
 </template>
 
 <script>
+    let routerTo, routerFrom;
     export default {
+        beforeRouteEnter(to, from, next) {
+            next(vm => {
+                routerTo = to;
+                routerFrom = from
+            })
+        },
         name: "SettingPage.vue",
         data() {
             return {
@@ -187,6 +194,13 @@
         methods: {
             change(status) {
                 this.$Message.info('开关状态：' + status);
+            },
+            backPush() {
+                console.log(routerFrom);
+                if (routerFrom == null)
+                    this.$router.push({path: '/'});
+                else
+                    this.$router.push({path: routerFrom.path});
             }
         }
     }
