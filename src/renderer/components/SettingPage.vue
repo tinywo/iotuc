@@ -71,12 +71,17 @@
             </Anchor>
         </div>
         <div class="tw-rightbar"
-             style="padding-left: 234px;width:100%;padding-top: 20px;padding-right: 30px;-webkit-app-region: no-drag;"
-             :style="{position: 'fixed', height: '100vh', left: 0, overflow: 'auto'}">
-
+             style="padding-left: 234px;width:100%;padding-top: 20px;padding-right: 30px;height:calc(100% - 100px);padding-bottom:50px;-webkit-app-region: no-drag;"
+             :style="{position: 'fixed', left: 0, overflow: 'auto'}">
             <Form :model="formLeft" label-position="left" :label-width="60">
                 <div class="tw-setting-item" id="serialport">
                     <h2>串口</h2>
+                    <FormItem label="开关">
+                        <i-switch size="large">
+                            <span slot="open">开启</span>
+                            <span slot="close">关闭</span>
+                        </i-switch>
+                    </FormItem>
                     <FormItem label="端口">
                         <Select v-model="formLeft.input1" style="width:260px">
                             <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}
@@ -93,6 +98,12 @@
                 <Divider/>
                 <div class="tw-setting-item" id="mysql">
                     <h2>MySQL</h2>
+                    <FormItem label="开关">
+                        <i-switch size="large">
+                            <span slot="open">开启</span>
+                            <span slot="close">关闭</span>
+                        </i-switch>
+                    </FormItem>
                     <FormItem label="主机">
                         <Input v-model="value" placeholder="" style="width: 260px"/>
                     </FormItem>
@@ -119,6 +130,12 @@
                 <Divider/>
                 <div class="tw-setting-item" id="websocket">
                     <h2>WebSocket</h2>
+                    <FormItem label="开关">
+                        <i-switch size="large">
+                            <span slot="open">开启</span>
+                            <span slot="close">关闭</span>
+                        </i-switch>
+                    </FormItem>
                     <FormItem label="端口号">
                         <Input v-model="value" placeholder="" style="width: 260px"/>
                     </FormItem>
@@ -126,6 +143,12 @@
                 <Divider/>
                 <div class="tw-setting-item" id="tcp">
                     <h2>TCP</h2>
+                    <FormItem label="开关">
+                        <i-switch size="large">
+                            <span slot="open">开启</span>
+                            <span slot="close">关闭</span>
+                        </i-switch>
+                    </FormItem>
                     <FormItem label="端口号">
                         <Input v-model="value" placeholder="" style="width: 260px"/>
                     </FormItem>
@@ -133,6 +156,12 @@
                 <Divider/>
                 <div class="tw-setting-item" id="udp">
                     <h2>UDP</h2>
+                    <FormItem label="开关">
+                        <i-switch size="large">
+                            <span slot="open">开启</span>
+                            <span slot="close">关闭</span>
+                        </i-switch>
+                    </FormItem>
                     <FormItem label="端口号">
                         <Input v-model="value" placeholder="" style="width: 260px"/>
                     </FormItem>
@@ -147,11 +176,17 @@
         name: "SettingPage.vue",
         data() {
             return {
+                switch1: false,
                 formLeft: {
                     input1: '',
                     input2: '',
                     input3: ''
                 }
+            }
+        },
+        methods: {
+            change(status) {
+                this.$Message.info('开关状态：' + status);
             }
         }
     }
