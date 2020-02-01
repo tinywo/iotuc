@@ -107,6 +107,9 @@
                     <FormItem label="主机">
                         <Input v-model="value" placeholder="" style="width: 260px"/>
                     </FormItem>
+                    <FormItem label="端口">
+                        <Input v-model="value" placeholder="" style="width: 260px"/>
+                    </FormItem>
                     <FormItem label="用户名">
                         <Input v-model="value" placeholder="" style="width: 260px"/>
                     </FormItem>

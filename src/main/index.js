@@ -15,7 +15,11 @@ let appTray = null;
 
 //  设置存储
 const storeSettingSchema = {
-    serial: {
+    serialPort: {
+        port: {
+            type: 'string',
+            default: 'com1'
+        },
         baudRate: {
             type: 'number',
             maximum: 115200,
@@ -48,6 +52,46 @@ const storeSettingSchema = {
             type: 'string',
             default: 'data'
         }
+    },
+    websocket: {
+        port: {
+            type: 'number',
+            default: 8000
+        }
+    },
+    tcp: {
+        port: {
+            type: 'number',
+            default: 8001
+        }
+    },
+    udp: {
+        port: {
+            type: 'number',
+            default: 8002
+        }
+    },
+    service: {
+        serialPort: {
+            type: 'boolean',
+            default: false
+        },
+        mysql: {
+            type: 'boolean',
+            default: false
+        },
+        websocket: {
+            type: 'boolean',
+            default: false
+        },
+        tcp: {
+            type: 'boolean',
+            default: false
+        },
+        udp: {
+            type: 'boolean',
+            default: false
+        },
     }
 };
 const storeSetting = new store({storeSettingSchema});
