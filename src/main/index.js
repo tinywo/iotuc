@@ -204,12 +204,22 @@ app.on('ready', () => {
   if (process.env.NODE_ENV === 'production') autoUpdater.checkForUpdates()
 })
  */
+//  路由跳转
 var routerPushEventEmitter = new events.EventEmitter();
 ipcMain.on('routerPush', function (event) {
     routerPushEventEmitter.on('routerPush', function (page) {
         event.sender.send('routerPush', page);
     });
 });
+
+//  最小、关闭命令
+ipcMain.on('windowHandle', function (event, args) {
+    if (args === 'min')
+        mainWindow.minimize();
+    else
+        mainWindow.close();
+});
+
 ipcMain.on('listenAll', function (event) {
     SPeventEmitter = new events.EventEmitter();
     goSettingEventEmitter.on('goSetting', function (msg) {

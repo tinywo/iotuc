@@ -94,10 +94,10 @@
                         <Icon type="ios-settings" size="18"/>
                     </router-link>
                     <Divider type="vertical"/>
-                    <a href="">
+                    <a @click="windowMin">
                         <Icon type="ios-remove" size="24"/>
                     </a>
-                    <a href="">
+                    <a @click="windowClose">
                         <Icon type="ios-close" size="24"/>
                     </a>
                 </div>
@@ -169,6 +169,8 @@
     </div>
 </template>
 <script>
+    const electron = require('electron');
+    const ipcRenderer = electron.ipcRenderer;
     export default {
         data() {
             return {
@@ -183,10 +185,22 @@
                 ]
             }
         },
-        methods: {},
+        methods: {
+            backPush() {
+                console.log(routerFrom);
+                if (routerFrom == null)
+                    this.$router.push({path: '/'});
+                else
+                    this.$router.push({path: routerFrom.path});
+            },
+            windowMin() {
+                ipcRenderer.send('windowHandle', 'min');
+            },
+            windowClose() {
+                ipcRenderer.send('windowHandle', 'max');
+            }
+        },
         mounted() {
-            const electron = require('electron');
-            const ipcRenderer = electron.ipcRenderer;
             let that = this;
             ipcRenderer.send('routerPush');
             ipcRenderer.on('routerPush', function (event, args) {
