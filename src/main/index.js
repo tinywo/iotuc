@@ -147,7 +147,7 @@ function init() {
 }
 
 //  读取Setting
-let setting = [];
+let setting = {};
 
 function loadSetting() {
     setting.serialPort = storeSetting.get('serial.port');
@@ -352,7 +352,7 @@ ipcMain.on('getSetting', function (event) {
 
 //  串口开关
 ipcMain.on('serviceSerial', function (event, args) {
-    if (args==='on'){
+    if (args === 'on') {
         getSerialPort();
         let port = new serialPort('com1', {
             baudRate: 115200

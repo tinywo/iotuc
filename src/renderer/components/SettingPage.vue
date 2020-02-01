@@ -129,7 +129,7 @@
                 <div class="tw-setting-item" id="ip">
                     <h2>IP</h2>
                     <FormItem label="本机IP">
-                        <Input v-model="Ip" placeholder="" style="width: 260px"/>
+                        <Input v-model="ip" placeholder="" style="width: 260px"/>
                     </FormItem>
                 </div>
                 <Divider/>
@@ -192,21 +192,22 @@
         data() {
             ipcRenderer.send('getSetting');
             ipcRenderer.on('freshSetting', function (event, args) {
+                console.log(args);
                 setting = args;
             });
             return {
-                switchSerialPort: setting.serviceSerialPort,
-                switchMySQL: setting.serviceMysql,
-                switchWebSocket: setting.serviceWebsocket,
-                switchTCP: setting.serviceTcp,
-                switchUDP: setting.serviceUdp,
-                mysqlHost: setting.mysqlHost,
-                mysqlPort: setting.mysqlPort,
-                mysqlUser: setting.mysqlUser,
-                mysqlPassword: setting.mysqlPassword,
-                mysqlDatabase: setting.mysqlDatabase,
-                mysqlTable: setting.mysqlTable,
-                serialPort: setting.serialPort,
+                switchSerialPort: setting['serviceSerialPort'],
+                switchMySQL: setting['serviceMysql'],
+                switchWebSocket: setting['serviceWebsocket'],
+                switchTCP: setting['serviceTcp'],
+                switchUDP: setting['serviceUdp'],
+                mysqlHost: setting['mysqlHost'],
+                mysqlPort: setting['mysqlPort'],
+                mysqlUser: setting['mysqlUser'],
+                mysqlPassword: setting['mysqlPassword'],
+                mysqlDatabase: setting['mysqlDatabase'],
+                mysqlTable: setting['mysqlTable'],
+                serialPort: setting['serialPort'],
                 serialPortList: [
                     {
                         value: 'com1',
@@ -240,10 +241,10 @@
                         label: '115200'
                     },
                 ],
-                websocketPort: setting.websocketPort,
-                tcpPort: setting.tcpPort,
-                udpPort: setting.udpPort,
-                Ip: setting.Ip
+                websocketPort: setting['websocketPort'],
+                tcpPort: setting['tcpPort'],
+                udpPort: setting['udpPort'],
+                ip: setting['ip']
             }
         },
         mounted() {
