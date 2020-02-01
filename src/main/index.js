@@ -15,6 +15,9 @@ let appTray = null;
 
 //  设置存储
 const storeSettingSchema = {
+    version: {
+        type: 'string'
+    },
     serialPort: {
         port: {
             type: 'string',
@@ -95,20 +98,46 @@ const storeSettingSchema = {
     }
 };
 const storeSetting = new store({storeSettingSchema});
-storeSetting.set({
-    serial: {
-        baudRate: 115200
-    },
-    mysql: {
-        host: 'localhost',
-        port: 3306,
-        user: 'root',
-        password: 'root',
-        database: 'iot',
-        table: 'data'
+init();
+
+function init() {
+    if (storeSetting.has('version')) {
+        console.log(storeSetting.get('version'));
+    } else {
+        storeSetting.set({
+            version: '0.0.1',
+            serialPort: {
+                port: 'com1',
+                baudRate: 115200
+            },
+            mysql: {
+                host: 'localhost',
+                port: 3306,
+                user: 'root',
+                password: 'root',
+                database: 'iot',
+                table: 'data'
+            },
+            websocket: {
+                port: 8000
+            },
+            tcp: {
+                port: 8001
+            },
+            udp: {
+                port: 8002
+            },
+            service: {
+                serialPort: false,
+                mysql: false,
+                websocket: false,
+                tcp: false,
+                udp: false
+            }
+        });
     }
-});
-console.log(storeSetting.get('mysql.port'));
+}
+
 const mysql = require('mysql');
 const conn = mysql.createConnection({
     host: "localhost",
@@ -116,11 +145,17 @@ const conn = mysql.createConnection({
     password: "root",
     database: "iot"
 });
-const addSql = 'INSERT INTO data(Id,temp,hum,create)VALUE (0,?,?,?)';
-const addSqlParams = [11, 22, '2020-1-23 16:43:00'];
-conn.query(addSql, addSqlParams, (err, result) => {
-    if (err) return console.log('[ErrorInfo]: ', err.message);
-});
+
+function addSql(temp, hum) {
+    const addSql = 'INSERT INTO data(Id,temp,hum,create)VALUE (0,?,?,?)';
+    let nowTime = Date.now();
+    const addSqlParams = [temp, hum, nowTime];
+    conn.query(addSql, addSqlParams, (err, result) => {
+        if (err) return console.log('[ErrorInfo]: ', err.message);
+    });
+}
+
+
 //  遍历串口端口
 serialPort.list().then(
     ports => ports.forEach(activePort),
