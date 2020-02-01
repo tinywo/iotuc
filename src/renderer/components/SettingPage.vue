@@ -53,7 +53,7 @@
 <template>
     <div>
         <div style="border-bottom: 0.5px solid #e6e7ea;padding-left: 22px;">
-            <Button :size="buttonSize" type="primary" @click="backPush"
+            <Button type="primary" @click="backPush"
                     style="height: 50px;line-height: 50px;font-size: 20px;color:#515a6e;border:none;background-color:transparent;font-weight: 100;font-family: '等线 Light';-webkit-app-region: no-drag;">
                 <Icon type="ios-arrow-back" size="24"/>
                 设置
@@ -73,24 +73,26 @@
         <div class="tw-rightbar"
              style="padding-left: 234px;width:100%;padding-top: 20px;padding-right: 30px;height:calc(100% - 100px);padding-bottom:50px;-webkit-app-region: no-drag;"
              :style="{position: 'fixed', left: 0, overflow: 'auto'}">
-            <Form :model="formLeft" label-position="left" :label-width="60">
+            <Form label-position="left" :label-width="60">
                 <div class="tw-setting-item" id="serialport">
                     <h2>串口</h2>
                     <FormItem label="开关">
-                        <i-switch size="large">
+                        <i-switch size="large" v-model="switchSerialPort">
                             <span slot="open">开启</span>
                             <span slot="close">关闭</span>
                         </i-switch>
                     </FormItem>
                     <FormItem label="端口">
-                        <Select v-model="formLeft.input1" style="width:260px">
-                            <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}
+                        <Select v-model="serialPort" style="width:260px">
+                            <Option v-for="item in serialPortList" :value="item.value" :key="item.value">{{ item.label
+                                }}
                             </Option>
                         </Select>
                     </FormItem>
                     <FormItem label="波特率">
-                        <Select v-model="formLeft.input1" style="width:260px">
-                            <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}
+                        <Select v-model="serialBaudRate" style="width:260px">
+                            <Option v-for="item in serialBaudRateList" :value="item.value" :key="item.value">{{
+                                item.label }}
                             </Option>
                         </Select>
                     </FormItem>
@@ -99,74 +101,74 @@
                 <div class="tw-setting-item" id="mysql">
                     <h2>MySQL</h2>
                     <FormItem label="开关">
-                        <i-switch size="large">
+                        <i-switch size="large" v-model="switchMySQL">
                             <span slot="open">开启</span>
                             <span slot="close">关闭</span>
                         </i-switch>
                     </FormItem>
                     <FormItem label="主机">
-                        <Input v-model="value" placeholder="" style="width: 260px"/>
+                        <Input v-model="mysqlHost" placeholder="" style="width: 260px"/>
                     </FormItem>
                     <FormItem label="端口">
-                        <Input v-model="value" placeholder="" style="width: 260px"/>
+                        <Input v-model="mysqlPort" placeholder="" style="width: 260px"/>
                     </FormItem>
                     <FormItem label="用户名">
-                        <Input v-model="value" placeholder="" style="width: 260px"/>
+                        <Input v-model="mysqlUser" placeholder="" style="width: 260px"/>
                     </FormItem>
                     <FormItem label="密码">
-                        <Input v-model="value" placeholder="" style="width: 260px"/>
+                        <Input v-model="mysqlPassword" placeholder="" style="width: 260px"/>
                     </FormItem>
                     <FormItem label="数据库">
-                        <Input v-model="value" placeholder="" style="width: 260px"/>
+                        <Input v-model="mysqlDatabase" placeholder="" style="width: 260px"/>
                     </FormItem>
                     <FormItem label="表名">
-                        <Input v-model="value" placeholder="" style="width: 260px"/>
+                        <Input v-model="mysqlTable" placeholder="" style="width: 260px"/>
                     </FormItem>
                 </div>
                 <Divider/>
                 <div class="tw-setting-item" id="ip">
                     <h2>IP</h2>
                     <FormItem label="本机IP">
-                        <Input v-model="value" placeholder="" style="width: 260px"/>
+                        <Input v-model="Ip" placeholder="" style="width: 260px"/>
                     </FormItem>
                 </div>
                 <Divider/>
                 <div class="tw-setting-item" id="websocket">
                     <h2>WebSocket</h2>
                     <FormItem label="开关">
-                        <i-switch size="large">
+                        <i-switch size="large" v-model="switchWebSocket">
                             <span slot="open">开启</span>
                             <span slot="close">关闭</span>
                         </i-switch>
                     </FormItem>
                     <FormItem label="端口号">
-                        <Input v-model="value" placeholder="" style="width: 260px"/>
+                        <Input v-model="websocketPort" placeholder="" style="width: 260px"/>
                     </FormItem>
                 </div>
                 <Divider/>
                 <div class="tw-setting-item" id="tcp">
                     <h2>TCP</h2>
-                    <FormItem label="开关">
+                    <FormItem label="开关" v-model="switchTCP">
                         <i-switch size="large">
                             <span slot="open">开启</span>
                             <span slot="close">关闭</span>
                         </i-switch>
                     </FormItem>
                     <FormItem label="端口号">
-                        <Input v-model="value" placeholder="" style="width: 260px"/>
+                        <Input v-model="tcpPort" placeholder="" style="width: 260px"/>
                     </FormItem>
                 </div>
                 <Divider/>
                 <div class="tw-setting-item" id="udp">
                     <h2>UDP</h2>
                     <FormItem label="开关">
-                        <i-switch size="large">
+                        <i-switch size="large" v-model="switchUDP">
                             <span slot="open">开启</span>
                             <span slot="close">关闭</span>
                         </i-switch>
                     </FormItem>
                     <FormItem label="端口号">
-                        <Input v-model="value" placeholder="" style="width: 260px"/>
+                        <Input v-model="udpPort" placeholder="" style="width: 260px"/>
                     </FormItem>
                 </div>
             </Form>
@@ -175,7 +177,10 @@
 </template>
 
 <script>
+    const electron = require('electron');
+    const ipcRenderer = electron.ipcRenderer;
     let routerTo, routerFrom;
+    let setting = {};
     export default {
         beforeRouteEnter(to, from, next) {
             next(vm => {
@@ -185,14 +190,64 @@
         },
         name: "SettingPage.vue",
         data() {
+            ipcRenderer.send('getSetting');
+            ipcRenderer.on('freshSetting', function (event, args) {
+                setting = args;
+            });
             return {
-                switch1: false,
-                formLeft: {
-                    input1: '',
-                    input2: '',
-                    input3: ''
-                }
+                switchSerialPort: setting.serviceSerialPort,
+                switchMySQL: setting.serviceMysql,
+                switchWebSocket: setting.serviceWebsocket,
+                switchTCP: setting.serviceTcp,
+                switchUDP: setting.serviceUdp,
+                mysqlHost: setting.mysqlHost,
+                mysqlPort: setting.mysqlPort,
+                mysqlUser: setting.mysqlUser,
+                mysqlPassword: setting.mysqlPassword,
+                mysqlDatabase: setting.mysqlDatabase,
+                mysqlTable: setting.mysqlTable,
+                serialPort: setting.serialPort,
+                serialPortList: [
+                    {
+                        value: 'com1',
+                        label: 'com1'
+                    },
+                    {
+                        value: 'com2',
+                        label: 'com2'
+                    },
+                ],
+                serialBaudRate: setting.serialBaudRate,
+                serialBaudRateList: [
+                    {
+                        value: 9600,
+                        label: '9600'
+                    },
+                    {
+                        value: 19200,
+                        label: '19200'
+                    },
+                    {
+                        value: 38400,
+                        label: '38400'
+                    },
+                    {
+                        value: 57600,
+                        label: '57600'
+                    },
+                    {
+                        value: 115200,
+                        label: '115200'
+                    },
+                ],
+                websocketPort: setting.websocketPort,
+                tcpPort: setting.tcpPort,
+                udpPort: setting.udpPort,
+                Ip: setting.Ip
             }
+        },
+        mounted() {
+
         },
         methods: {
             change(status) {
@@ -204,6 +259,9 @@
                     this.$router.push({path: '/'});
                 else
                     this.$router.push({path: routerFrom.path});
+            },
+            changeSwitch() {
+                this.switchSerialPort = true;
             }
         }
     }

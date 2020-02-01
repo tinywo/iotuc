@@ -2,6 +2,7 @@ const electron = require('electron');
 const {app, BrowserWindow, Menu} = electron;
 const store = require('electron-store');
 const events = require('events');
+const os = require('os');
 const path = require('path');
 const shell = electron.shell;
 const img = path.join(__dirname, '../../static/img');
@@ -18,7 +19,7 @@ const storeSettingSchema = {
     version: {
         type: 'string'
     },
-    serialPort: {
+    serial: {
         port: {
             type: 'string',
             default: 'com1'
@@ -106,7 +107,7 @@ function init() {
     } else {
         storeSetting.set({
             version: '0.0.1',
-            serialPort: {
+            serial: {
                 port: 'com1',
                 baudRate: 115200
             },
@@ -299,6 +300,29 @@ ipcMain.on('windowHandle', function (event, args) {
         mainWindow.close();
 });
 
+//  获取配置
+ipcMain.on('getSetting', function (event) {
+    let setting = {};
+    setting.serialPort = storeSetting.get('serial.port');
+    setting.serialBaudRate = storeSetting.get('serial.baudRate');
+    setting.mysqlHost = storeSetting.get('mysql.host');
+    setting.mysqlPort = storeSetting.get('mysql.port');
+    setting.mysqlUser = storeSetting.get('mysql.user');
+    setting.mysqlPassword = storeSetting.get('mysql.password');
+    setting.mysqlDatabase = storeSetting.get('mysql.database');
+    setting.mysqlTable = storeSetting.get('mysql.table');
+    setting.websocketPort = storeSetting.get('websocket.port');
+    setting.tcpPort = storeSetting.get('tcp.port');
+    setting.udpPort = storeSetting.get('udp.port');
+    setting.serviceSerialPort = storeSetting.get('service.serialPort');
+    setting.serviceMysql = storeSetting.get('service.mysql');
+    setting.serviceWebsocket = storeSetting.get('service.websocket');
+    setting.serviceTcp = storeSetting.get('service.tcp');
+    setting.serviceUdp = storeSetting.get('service.udp');
+    setting.Ip = getIpAddress();
+    event.sender.send('freshSetting', setting);
+});
+
 ipcMain.on('listenAll', function (event) {
     SPeventEmitter = new events.EventEmitter();
     goSettingEventEmitter.on('goSetting', function (msg) {
@@ -306,9 +330,6 @@ ipcMain.on('listenAll', function (event) {
     });
 });
 
-ipcMain.on('getSetting', function (event) {
-    event.sender.send('backSetting');
-});
 
 ipcMain.on('startService', function (event, args) {
     plug = args;
