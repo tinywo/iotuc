@@ -54,8 +54,7 @@
 </template>
 
 <script>
-    import echarts from 'echarts'
-
+    const echarts = require('echarts');
     export default {
         name: "RealPage",
         data() {
@@ -64,15 +63,16 @@
         mounted() {
             const electron = require('electron');
             const ipcRenderer = electron.ipcRenderer;
+            ipcRenderer.send('serviceSerial');
+            //ipcRenderer.send('listenTemp');
 
             ipcRenderer.send('getIpAddress');
-
             ipcRenderer.on('showSerialData', function (event, args) {
+
                 var serialdata = document.getElementById("serialdata");
                 serialdata.value = serialdata.value + args + '\n';
             });
             var data = (function () {
-                // 生成随机值
                 var data = [],
                     time = (new Date()).getTime(),
                     i;
@@ -130,26 +130,24 @@
                 }]
             };
             myChart.setOption(option);
-            ipcRenderer.on('showSocketData', function (event, args) {
+
+            function nowData(data) {
+                return {
+                    name: (new Date()).getTime().toString(),
+                    value: [(new Date()).getTime(), data]
+                };
+            }
+
+            ipcRenderer.on('showTemp', function (event, args) {
+                console.log(args);
                 data.shift();
-                data.push(args);
+                data.push(nowData(args));
                 myChart.setOption({
                     series: [{
-
                         data: data
                     }]
                 });
             });
-            /*         setInterval(function () {
-                         data.shift();
-                         data.push(randomData());
-                         myChart.setOption({
-                             series: [{
-
-                                 data: data
-                             }]
-                         });
-                     }, 1000);*/
         }
     }
 </script>

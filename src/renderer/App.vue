@@ -206,6 +206,7 @@
             ipcRenderer.on('routerPush', function (event, args) {
                 that.$router.push({path: args});
             });
+            ipcRenderer.send('serviceSerial', 'on');
         }
     }
 </script>

@@ -6,7 +6,7 @@
     <div>
         <Breadcrumb :style="{'height':'40px','line-height': '40px','padding-left':' 20px'}">
             <BreadcrumbItem to="/control">
-                <Icon type="ios-home" size="20"></Icon>
+                <Icon type="ios-switch" size="20"></Icon>
                 系统控制
             </BreadcrumbItem>
         </Breadcrumb>

@@ -8,8 +8,7 @@ const shell = electron.shell;
 const img = path.join(__dirname, '../../static/img');
 const serialPort = require('serialport');
 const ipcMain = electron.ipcMain;
-let activePort = [];
-let plug = '';
+
 let host = '';
 const tray = electron.Tray;
 let appTray = null;
@@ -99,11 +98,19 @@ const storeSettingSchema = {
     }
 };
 const storeSetting = new store({storeSettingSchema});
-init();
+
+const mysql = require('mysql');
+const conn = mysql.createConnection({
+    host: "localhost",
+    user: "root",
+    password: "root",
+    database: "iot"
+});
 
 function init() {
+    getIpAddress();
     if (storeSetting.has('version')) {
-        console.log(storeSetting.get('version'));
+        loadSetting();
     } else {
         storeSetting.set({
             version: '0.0.1',
@@ -139,13 +146,29 @@ function init() {
     }
 }
 
-const mysql = require('mysql');
-const conn = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "root",
-    database: "iot"
-});
+//  读取Setting
+let setting = [];
+
+function loadSetting() {
+    setting.serialPort = storeSetting.get('serial.port');
+    setting.serialBaudRate = storeSetting.get('serial.baudRate');
+    setting.mysqlHost = storeSetting.get('mysql.host');
+    setting.mysqlPort = storeSetting.get('mysql.port');
+    setting.mysqlUser = storeSetting.get('mysql.user');
+    setting.mysqlPassword = storeSetting.get('mysql.password');
+    setting.mysqlDatabase = storeSetting.get('mysql.database');
+    setting.mysqlTable = storeSetting.get('mysql.table');
+    setting.websocketPort = storeSetting.get('websocket.port');
+    setting.tcpPort = storeSetting.get('tcp.port');
+    setting.udpPort = storeSetting.get('udp.port');
+    setting.serviceSerialPort = storeSetting.get('service.serialPort');
+    setting.serviceMysql = storeSetting.get('service.mysql');
+    setting.serviceWebsocket = storeSetting.get('service.websocket');
+    setting.serviceTcp = storeSetting.get('service.tcp');
+    setting.serviceUdp = storeSetting.get('service.udp');
+    setting.ip = host;
+    return setting
+}
 
 function addSql(temp, hum) {
     const addSql = 'INSERT INTO data(Id,temp,hum,create)VALUE (0,?,?,?)';
@@ -156,17 +179,22 @@ function addSql(temp, hum) {
     });
 }
 
+//  获取可用串口
+let activePort = [];
+let plug = '';
 
+function getSerialPort() {
 //  遍历串口端口
-serialPort.list().then(
-    ports => ports.forEach(activePort),
-    err => console.error(err)
-);
+    serialPort.list().then(
+        ports => ports.forEach(activePort),
+        err => console.error(err)
+    );
 
 //  可用的端口
-function activePorts(item, index) {
-    activePort[index] = item.path;
-    plug = activePort[0];
+    function activePorts(item, index) {
+        activePort[index] = item.path;
+        plug = activePort[0];
+    }
 }
 
 //  获取本机IP
@@ -184,6 +212,22 @@ function getIpAddress() {
     host = ip;
     return ip;
 }
+
+//  serialPortService
+let servicePortServiceEventEmitter = new events.EventEmitter();
+let servicePortServiceHandler = function on() {
+    console.log('serialport');
+    getSerialPort();
+    let port = new serialPort('com2', {
+        baudRate: 115200,
+    });
+    port.on('open', function () {
+        port.on('data', function (data) {
+            let str = data.toString();
+            servicePortServiceEventEmitter.emit('listenTemp', str)
+        })
+    });
+};
 
 if (process.env.NODE_ENV !== 'development') {
     global.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\')
@@ -244,7 +288,8 @@ function createWindow() {
     //mainWindow.webContents.openDevTools();
     //  调试控制台
     mainWindow.on('ready-to-show', function () {
-        mainWindow.show()//初始化完成后显示防止启动白屏
+        mainWindow.show();//初始化完成后显示防止启动白屏
+        init(); //自定义的初始函数
     });
     mainWindow.on('closed', () => {
         mainWindow = null
@@ -285,7 +330,7 @@ app.on('ready', () => {
 })
  */
 //  路由跳转
-var routerPushEventEmitter = new events.EventEmitter();
+let routerPushEventEmitter = new events.EventEmitter();
 ipcMain.on('routerPush', function (event) {
     routerPushEventEmitter.on('routerPush', function (page) {
         event.sender.send('routerPush', page);
@@ -302,25 +347,48 @@ ipcMain.on('windowHandle', function (event, args) {
 
 //  获取配置
 ipcMain.on('getSetting', function (event) {
-    let setting = {};
-    setting.serialPort = storeSetting.get('serial.port');
-    setting.serialBaudRate = storeSetting.get('serial.baudRate');
-    setting.mysqlHost = storeSetting.get('mysql.host');
-    setting.mysqlPort = storeSetting.get('mysql.port');
-    setting.mysqlUser = storeSetting.get('mysql.user');
-    setting.mysqlPassword = storeSetting.get('mysql.password');
-    setting.mysqlDatabase = storeSetting.get('mysql.database');
-    setting.mysqlTable = storeSetting.get('mysql.table');
-    setting.websocketPort = storeSetting.get('websocket.port');
-    setting.tcpPort = storeSetting.get('tcp.port');
-    setting.udpPort = storeSetting.get('udp.port');
-    setting.serviceSerialPort = storeSetting.get('service.serialPort');
-    setting.serviceMysql = storeSetting.get('service.mysql');
-    setting.serviceWebsocket = storeSetting.get('service.websocket');
-    setting.serviceTcp = storeSetting.get('service.tcp');
-    setting.serviceUdp = storeSetting.get('service.udp');
-    setting.Ip = getIpAddress();
     event.sender.send('freshSetting', setting);
+});
+
+//  串口开关
+ipcMain.on('serviceSerial', function (event, args) {
+    if (args==='on'){
+        getSerialPort();
+        let port = new serialPort('com1', {
+            baudRate: 115200
+        });
+        port.on('open', function () {
+            port.on('data', function (data) {
+                let str = data.toString();
+                //console.log(str);
+                event.sender.send('showTemp', str);
+                listenTempEventEmitter.emit('listenTemp', str)
+            })
+        });
+    }
+
+    /*let port = new serialPort(setting['serialPort'], {
+        baudRate: setting['serialBaudRate']
+    });*/
+
+});
+
+//  监测温度
+let listenTempEventEmitter = new events.EventEmitter();
+ipcMain.on('listenTemp', function (event) {
+    listenTempEventEmitter.on('listTemp', function (data) {
+        let str = data.substr(0, 2);
+        event.send('showTemp', str);
+    });
+    /*    let port = new serialPort(setting.serialPort, {
+        baudRate: setting.serialBaudRate
+    });
+    port.on('open', function () {
+        port.on('data', function (data) {
+            let str = data.toString();
+
+        })
+    })*/
 });
 
 ipcMain.on('listenAll', function (event) {
