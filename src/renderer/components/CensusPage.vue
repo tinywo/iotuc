@@ -54,14 +54,36 @@
 </template>
 
 <script>
-    import echarts from 'echarts'
-
+    const echarts = require('echarts');
+    const axios = require('axios');
     export default {
         name: "RealPage",
         data() {
             return {}
         },
         mounted() {
+            let data = {};
+            let tempData = [];
+            let dateData = [];
+            axios.post('http://api.s/api/temp/avgTemp7day').then(res => {
+                data = res['data'];
+                for (let i = 0; i < 7; i++) {
+                    let temp = data[i]['temp'];
+                    let date = data[i]['date'];
+                    tempData.push(temp);
+                    dateData.push(date);
+                }
+                myChart.setOption({
+                    xAxis: {
+                        data: dateData
+                    },
+                    series: [{
+                        data: tempData
+                    }]
+                });
+            }).catch(err => {
+                console.log(err);
+            });
             /*  var data = [];
               var now = +new Date(1997, 9, 3);
               var oneDay = 24 * 3600 * 1000;
@@ -140,20 +162,20 @@
             var myChart = echarts.init(document.getElementById('echart'));
             var option = {
                 title: {
-                    text: 'test'
+                    text: '近7日平均温度'
                 },
                 tooltip: {},
                 legend: {
                     data: ['销量 ']
                 },
                 xAxis: {
-                    data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"]
+                    data: []
                 },
                 yAxis: {},
                 series: [{
-                    name: '销量',
+                    name: '日期',
                     type: 'bar',
-                    data: [5, 20, 36, 10, 10, 20]
+                    data: []
                 }]
             };
             myChart.setOption(option);

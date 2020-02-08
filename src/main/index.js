@@ -249,7 +249,10 @@ function createWindow() {
         useContentSize: true,
         width: 1040,
         frame: false,
-        show: false//先隐藏
+        show: false,//先隐藏
+        webPreferences: {
+            webSecurity: false
+        }
     });
     mainWindow.loadURL(winURL);
     var trayMenuTemplate = [
