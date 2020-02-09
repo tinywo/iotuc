@@ -48,6 +48,22 @@
         /* -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);*/
         background: #e1e1e2;
     }
+
+    #btn-save {
+        text-align: center;
+    }
+
+    .tw-btn-save {
+        background-color: rgb(81, 90, 110);
+        margin-top: 30px !important;
+        height: 40px !important;
+        width: 120px !important;
+        color: #fff !important;
+    }
+
+    .tw-btn-save:hover {
+        border: none;
+    }
 </style>
 
 <template>
@@ -171,6 +187,9 @@
                         <Input v-model="udpPort" placeholder="" style="width: 260px"/>
                     </FormItem>
                 </div>
+                <div class="tw-setting-item" id="btn-save">
+                    <Button class="tw-btn-save" style="background-color: #515a6e;">保存</Button>
+                </div>
             </Form>
         </div>
     </div>
@@ -178,6 +197,7 @@
 
 <script>
     const electron = require('electron');
+    const settingOption = electron.remote.getGlobal('setting');
     const ipcRenderer = electron.ipcRenderer;
     let routerTo, routerFrom;
     let setting = {};
@@ -190,24 +210,19 @@
         },
         name: "SettingPage.vue",
         data() {
-            ipcRenderer.send('getSetting');
-            ipcRenderer.on('freshSetting', function (event, args) {
-                console.log(args);
-                setting = args;
-            });
             return {
-                switchSerialPort: setting['serviceSerialPort'],
-                switchMySQL: setting['serviceMysql'],
-                switchWebSocket: setting['serviceWebsocket'],
-                switchTCP: setting['serviceTcp'],
-                switchUDP: setting['serviceUdp'],
-                mysqlHost: setting['mysqlHost'],
-                mysqlPort: setting['mysqlPort'],
-                mysqlUser: setting['mysqlUser'],
-                mysqlPassword: setting['mysqlPassword'],
-                mysqlDatabase: setting['mysqlDatabase'],
-                mysqlTable: setting['mysqlTable'],
-                serialPort: setting['serialPort'],
+                switchSerialPort: settingOption.serviceSerialPort,
+                switchMySQL: settingOption.serviceMysql,
+                switchWebSocket: settingOption.serviceWebsocket,
+                switchTCP: settingOption.serviceTcp,
+                switchUDP: settingOption.serviceUdp,
+                mysqlHost: settingOption.mysqlHost,
+                mysqlPort: settingOption.mysqlPort,
+                mysqlUser: settingOption.mysqlUser,
+                mysqlPassword: settingOption.mysqlPassword,
+                mysqlDatabase: settingOption.mysqlDatabase,
+                mysqlTable: settingOption.mysqlTable,
+                serialPort: settingOption.serialPort,
                 serialPortList: [
                     {
                         value: 'com1',
@@ -218,7 +233,7 @@
                         label: 'com2'
                     },
                 ],
-                serialBaudRate: setting.serialBaudRate,
+                serialBaudRate: settingOption.serialBaudRate,
                 serialBaudRateList: [
                     {
                         value: 9600,
@@ -241,14 +256,19 @@
                         label: '115200'
                     },
                 ],
-                websocketPort: setting['websocketPort'],
-                tcpPort: setting['tcpPort'],
-                udpPort: setting['udpPort'],
-                ip: setting['ip']
+                websocketPort: settingOption.websocketPort,
+                tcpPort: settingOption.tcpPort,
+                udpPort: settingOption.udpPort,
+                ip: settingOption.ip
             }
         },
         mounted() {
-
+            ipcRenderer.send('getSetting');
+            ipcRenderer.on('freshSetting', function (event, args) {
+                console.log(args);
+                setting = args;
+            });
+            console.log();
         },
         methods: {
             change(status) {

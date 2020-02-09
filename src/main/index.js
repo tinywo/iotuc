@@ -9,6 +9,8 @@ const img = path.join(__dirname, '../../static/img');
 const serialPort = require('serialport');
 const ipcMain = electron.ipcMain;
 
+global.setting = {};
+
 let host = '';
 const tray = electron.Tray;
 let appTray = null;
@@ -110,7 +112,8 @@ const conn = mysql.createConnection({
 function init() {
     getIpAddress();
     if (storeSetting.has('version')) {
-        loadSetting();
+       // loadSetting();
+        global.setting=loadSetting();
     } else {
         storeSetting.set({
             version: '0.0.1',
@@ -147,26 +150,25 @@ function init() {
 }
 
 //  读取Setting
-let setting = {};
-
 function loadSetting() {
-    setting.serialPort = storeSetting.get('serial.port');
-    setting.serialBaudRate = storeSetting.get('serial.baudRate');
-    setting.mysqlHost = storeSetting.get('mysql.host');
-    setting.mysqlPort = storeSetting.get('mysql.port');
-    setting.mysqlUser = storeSetting.get('mysql.user');
-    setting.mysqlPassword = storeSetting.get('mysql.password');
-    setting.mysqlDatabase = storeSetting.get('mysql.database');
-    setting.mysqlTable = storeSetting.get('mysql.table');
-    setting.websocketPort = storeSetting.get('websocket.port');
-    setting.tcpPort = storeSetting.get('tcp.port');
-    setting.udpPort = storeSetting.get('udp.port');
-    setting.serviceSerialPort = storeSetting.get('service.serialPort');
-    setting.serviceMysql = storeSetting.get('service.mysql');
-    setting.serviceWebsocket = storeSetting.get('service.websocket');
-    setting.serviceTcp = storeSetting.get('service.tcp');
-    setting.serviceUdp = storeSetting.get('service.udp');
-    setting.ip = host;
+    let setting = {};
+    setting['serialPort'] = storeSetting.get('serial.port');
+    setting['serialBaudRate'] = storeSetting.get('serial.baudRate');
+    setting['mysqlHost'] = storeSetting.get('mysql.host');
+    setting['mysqlPort'] = storeSetting.get('mysql.port');
+    setting['mysqlUser'] = storeSetting.get('mysql.user');
+    setting['mysqlPassword'] = storeSetting.get('mysql.password');
+    setting['mysqlDatabase'] = storeSetting.get('mysql.database');
+    setting['mysqlTable'] = storeSetting.get('mysql.table');
+    setting['websocketPort'] = storeSetting.get('websocket.port');
+    setting['tcpPort'] = storeSetting.get('tcp.port');
+    setting['udpPort'] = storeSetting.get('udp.port');
+    setting['serviceSerialPort'] = storeSetting.get('service.serialPort');
+    setting['serviceMysql'] = storeSetting.get('service.mysql');
+    setting['serviceWebsocket'] = storeSetting.get('service.websocket');
+    setting['serviceTcp'] = storeSetting.get('service.tcp');
+    setting['serviceUdp'] = storeSetting.get('service.udp');
+    setting['ip'] = host;
     return setting
 }
 
