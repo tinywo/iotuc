@@ -134,14 +134,12 @@
                                     监测
                                 </MenuItem>
                             </router-link>
-
                             <router-link to="/monitor" style="color: #5c5c5c;">
                                 <MenuItem name="2-3">
                                     <Icon type="ios-pulse" size="20"/>
                                     监测
                                 </MenuItem>
                             </router-link>
-
                             <router-link to="/monitor" style="color: #5c5c5c;">
                                 <MenuItem name="2-3">
                                     <Icon type="ios-pulse" size="20"/>
@@ -187,7 +185,7 @@
                     </Menu>
                 </Sider>
                 <Layout :style="{'padding-left':$route.name!=='setting-page'?'199px':'0'}">
-                    <Content>
+                    <Content style="-webkit-app-region: no-drag;">
                         <router-view></router-view>
                     </Content>
                 </Layout>

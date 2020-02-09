@@ -49,8 +49,14 @@
                 数据统计
             </BreadcrumbItem>
         </Breadcrumb>
-        <div id="echart" style="width: 100%;height:512px;"></div>
-        <avgTemp7day></avgTemp7day>
+        <Tabs value="tab1">
+            <TabPane label="近7日平均温度" name="tab1">
+                <avg-temp7day></avg-temp7day>
+            </TabPane>
+            <TabPane label="近7日平均湿度" name="tab2">
+                <avg-hum7day></avg-hum7day>
+            </TabPane>
+        </Tabs>
     </div>
 </template>
 
@@ -58,56 +64,14 @@
     const echarts = require('echarts');
     const axios = require('axios');
     import avgTemp7day from './CensusPage/avgTemp7day'
+    import avgHum7day from "./CensusPage/avgHum7day";
 
     export default {
         name: "CensusPage",
-        components: {avgTemp7day},
+        components: {avgTemp7day, avgHum7day},
         data() {
             return {}
         },
-        mounted() {
-            let data = {};
-            let tempData = [];
-            let dateData = [];
-            axios.post('http://api.s/api/temp/avgTemp7day').then(res => {
-                data = res['data'];
-                for (let i = 0; i < 7; i++) {
-                    let temp = data[i]['temp'];
-                    let date = data[i]['date'];
-                    tempData.push(temp);
-                    dateData.push(date);
-                }
-                myChart.setOption({
-                    xAxis: {
-                        data: dateData
-                    },
-                    series: [{
-                        data: tempData
-                    }]
-                });
-            }).catch(err => {
-                console.log(err);
-            });
-            var myChart = echarts.init(document.getElementById('echart'));
-            var option = {
-                title: {
-                    text: '近7日平均温度'
-                },
-                tooltip: {},
-                legend: {
-                    data: ['温度 ']
-                },
-                xAxis: {
-                    data: []
-                },
-                yAxis: {},
-                series: [{
-                    name: '日期',
-                    type: 'bar',
-                    data: []
-                }]
-            };
-            myChart.setOption(option);
-        }
+        mounted() {}
     }
 </script>

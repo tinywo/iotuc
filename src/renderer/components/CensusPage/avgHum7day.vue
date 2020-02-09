@@ -3,14 +3,14 @@
 </style>
 
 <template>
-    <div id="echart-temp" style="width: 100%;height:462px;"></div>
+    <div id="echart-hum" style="width: 100%;height:462px;"></div>
 </template>
 
 <script>
     const echarts = require('echarts');
     const axios = require('axios');
     export default {
-        name: "avgTemp7day",
+        name: "avgHum7day",
         data() {
             return {}
         },
@@ -18,10 +18,10 @@
             let data = {};
             let tempData = [];
             let dateData = [];
-            axios.post('http://api.s/api/temp/avgTemp7day').then(res => {
+            axios.post('http://api.s/api/temp/avgHum7day').then(res => {
                 data = res['data'];
                 for (let i = 0; i < 7; i++) {
-                    let temp = data[i]['temp'];
+                    let temp = data[i]['hum'];
                     let date = data[i]['date'];
                     tempData.push(temp);
                     dateData.push(date);
@@ -37,14 +37,14 @@
             }).catch(err => {
                 console.log(err);
             });
-            var myChart = echarts.init(document.getElementById('echart-temp'));
+            var myChart = echarts.init(document.getElementById('echart-hum'));
             var option = {
                 title: {
-                    text: '    近7日平均温度'
+                    text: '    近7日平均湿度'
                 },
                 tooltip: {},
                 legend: {
-                    data: ['温度 ']
+                    data: ['湿度 ']
                 },
                 xAxis: {
                     data: []
