@@ -104,8 +104,8 @@
             </Header>
             <Layout>
                 <Sider v-show="$route.name!=='setting-page'" hide-trigger class="tw-leftbar"
-                       style="-webkit-app-region: no-drag;"
-                       :style="{position: 'fixed', height: '100vh', left: 0, overflow: 'auto'}">
+                       style="-webkit-app-region: no-drag;height:calc(100% - 50px) !important;padding-bottom:50px;"
+                       :style="{position: 'fixed', left: 0, overflow: 'auto'}">
                     <Menu active-name="1-1" theme="light">
                         <MenuGroup title="首页">
                             <router-link to="/" style="color: #5c5c5c;">
@@ -134,12 +134,39 @@
                                     监测
                                 </MenuItem>
                             </router-link>
+
+                            <router-link to="/monitor" style="color: #5c5c5c;">
+                                <MenuItem name="2-3">
+                                    <Icon type="ios-pulse" size="20"/>
+                                    监测
+                                </MenuItem>
+                            </router-link>
+
+                            <router-link to="/monitor" style="color: #5c5c5c;">
+                                <MenuItem name="2-3">
+                                    <Icon type="ios-pulse" size="20"/>
+                                    监测
+                                </MenuItem>
+                            </router-link>
+
+                            <router-link to="/monitor" style="color: #5c5c5c;">
+                                <MenuItem name="2-3">
+                                    <Icon type="ios-pulse" size="20"/>
+                                    监测
+                                </MenuItem>
+                            </router-link>
                         </MenuGroup>
                         <MenuGroup title="统计">
                             <router-link to="/census" style="color: #5c5c5c;">
                                 <MenuItem name="3-1">
                                     <Icon type="ios-stats" size="20"/>
-                                    数据统计
+                                    近7日数据
+                                </MenuItem>
+                            </router-link>
+                            <router-link to="/census" style="color: #5c5c5c;">
+                                <MenuItem name="3-2">
+                                    <Icon type="ios-stats" size="20"/>
+                                    近30日数据
                                 </MenuItem>
                             </router-link>
                             <router-link to="/census" style="color: #5c5c5c;">
